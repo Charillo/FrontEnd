@@ -12,22 +12,15 @@ export class MemberComponent implements OnInit {
   ListMember: string[]; // เก็บตัวแปรที่ดึงจากดาต้าเบส
   ListMemberOnTable: any[];
   okButtonOptions: any;
-  TestUrlImg : any;
+  TestUrlImg: any;
   constructor(public http: Http) {
-    this.okButtonOptions = {
-      text: 'Register',
-      type: 'normal',
-      onClick: function (e) {
-        window.location.href = "https://localhost:8000/Register.html" ;
-      }
-  };
-   }
+  }
 
   ngOnInit() {
     this.ListMemberOnTable = [];
     this.http.get(environment.UrlLocalHost + "GetMember").subscribe(
       res => {
-        
+
         this.ListMember = res.json();
         //console.log(this.ListMember[0]['mem_images']);
         this.ListMember.forEach((element, index) => {
@@ -43,7 +36,7 @@ export class MemberComponent implements OnInit {
           }
           this.TestUrlImg = this.ListMember[index]['mem_images'];
         });
-       
+
       }
     );
   }
@@ -83,7 +76,7 @@ export class MemberComponent implements OnInit {
     );
   }
   EditMember(e) {
-   
+
     var Id = e.key.id;
     var EmId = e.key.em_id;
     var FistName = e.key.em_firstname;
@@ -91,13 +84,24 @@ export class MemberComponent implements OnInit {
     var IdCard = e.key.em_id_card;
     var Tel = e.key.em_tel;
     var Address = e.key.em_address;
-    this.http.get(environment.UrlLocalHost + "EditMember/" + Id + "/" +EmId + "/" + FistName + "/" + LastName + "/" + IdCard + "/" + Tel + "/" + Address).subscribe(
+    this.http.get(environment.UrlLocalHost + "EditMember/" + Id + "/" + EmId + "/" + FistName + "/" + LastName + "/" + IdCard + "/" + Tel + "/" + Address).subscribe(
       res => {
         console.log(res);
       });
   }
-  test(e){
-    console.log(e);
-
+  onToolbarPreparing(e: any) {
+    e.toolbarOptions.items.push({
+      location: "before",
+      widget: "dxButton",
+      options: {
+        text: "Register",
+        type: "success",
+        icon: "add",
+        onClick: (args: any) => {
+          window.location.href = "https://localhost:8000/Register.html";
+        }
+      }
+    }
+    )
   }
 }
