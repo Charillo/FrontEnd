@@ -12,11 +12,6 @@
 <div class="bgimg blur"></div>
 <div class="w3-display-middle " style="width:95%; height:80%">
   <div class=" w3-container  w3-center " style="padding:128px 16px" id="data-grid-demo">
-    <!-- <div class="dx-field">
-      <div class="dx-field-value">
-        <dx-button [text]="okButtonOptions.text" [type]="okButtonOptions.type" (onClick)="okButtonOptions.onClick()"></dx-button>
-      </div>
-    </div> -->
     <dx-data-grid [showRowLines]="true" [showBorders]="true" [rowAlternationEnabled]="true" (onRowRemoved)="DeleteMember($event)"
       (onRowUpdated)="EditMember($event)" id="gridContainer" [dataSource]="ListMemberOnTable" (onCellPrepared)="onCellPrepared($event)"
       (onToolbarPreparing)="onToolbarPreparing($event)">
@@ -25,7 +20,7 @@
       <dxo-editing mode="popup" [allowUpdating]="true" [allowDeleting]="true">
         <dxo-popup [width]="800" [height]="545" title="Select year before add new target" [showTitle]="true" cellTemplate="popup"></dxo-popup>
       </dxo-editing>
-      <dxi-column caption="ID" dataField="em_id">
+      <dxi-column caption="ID" dataField="em_id" cellTemplate="em_id">
         <dxi-validation-rule type="required"></dxi-validation-rule>
       </dxi-column>
       <dxi-column caption="Firstname" dataField="em_firstname">
@@ -43,17 +38,45 @@
       <dxi-column caption="Address" dataField="em_address">
         <dxi-validation-rule type="required"></dxi-validation-rule>
       </dxi-column>
-      <div *dxTemplate="let cellData of 'em_id'">
-        <dx-button text="Click me" (onClick)="buttonClicked()">
+
+      <div *dxTemplate="let cellData of 'em_id' ">
+        <dx-button class="button-info" [text]="cellData.text" (onClick)="showInfo(cellData.text)">
         </dx-button>
       </div>
+
 
     </dx-data-grid>
   </div>
 
 </div>
 <!-- Navbar -->
-
+<dx-popup class="popup" [width]="800" [height]="350" [showTitle]="true" title="Info" [dragEnabled]="false" [closeOnOutsideClick]="true"
+  [(visible)]="popupVisible">
+  <div *dxTemplate="let data of 'content'">
+    <dx-form id="form">
+      <dxi-item itemType="group" cssClass="first-group" [colCount]="2">
+        <dxi-item>
+          <img src="{{mem_images}}" height="342" width="442">
+        </dxi-item>
+        <dxi-item itemType="group">
+          <div class="dx-fieldset">
+            <div class="dx-fieldset-header">{{mem_firstname}}</div>
+            <div class="dx-field">
+              <div class="dx-field-label">Emp Id : </div>
+              <div class="dx-field-value-static">{{mem_em_id}}</div>
+              <div class="dx-field-label">Id Card : </div>
+              <div class="dx-field-value-static">{{mem_id_card}}</div>
+              <div class="dx-field-label">Tel : </div>
+              <div class="dx-field-value-static">{{tel}}</div>
+              <div class="dx-field-label">Address : </div>
+              <div class="dx-field-value-static">{{address}}</div>
+            </div>
+          </div>
+        </dxi-item>
+      </dxi-item>
+    </dx-form>
+  </div>
+</dx-popup>
 <div class="w3-top">
 
   <div class="w3-bar w3-black w3-card">
@@ -70,7 +93,7 @@
         <i class="fa fa-caret-down"></i>
       </button>
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
-        <a href="https://localhost:8000/realtime.html" class="w3-bar-item w3-button">Realtime scan</a>
+        <a href="https://localhost:8000/Realtime.html" class="w3-bar-item w3-button">Realtime scan</a>
         <a href="#history" class="w3-bar-item w3-button">History</a>
       </div>
     </div>

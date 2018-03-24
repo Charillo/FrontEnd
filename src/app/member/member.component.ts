@@ -9,10 +9,18 @@ import notify from 'devextreme/ui/notify';
   styleUrls: ['./member.component.css']
 })
 export class MemberComponent implements OnInit {
+  mem_images: any;
+  mem_em_id: any;
+  address: any;
+  tel: any;
+  mem_id_card: any;
   ListMember: string[]; // เก็บตัวแปรที่ดึงจากดาต้าเบส
   ListMemberOnTable: any[];
   okButtonOptions: any;
   TestUrlImg: any;
+  popupVisible: any;
+  currentEmployee: any;
+  mem_firstname : any;
   constructor(public http: Http) {
   }
 
@@ -20,9 +28,8 @@ export class MemberComponent implements OnInit {
     this.ListMemberOnTable = [];
     this.http.get(environment.UrlLocalHost + "GetMember").subscribe(
       res => {
-
         this.ListMember = res.json();
-        //console.log(this.ListMember[0]['mem_images']);
+        console.log(this.ListMember);
         this.ListMember.forEach((element, index) => {
           this.ListMemberOnTable[index] = {
             id: this.ListMember[index]['mem_id'],
@@ -40,6 +47,7 @@ export class MemberComponent implements OnInit {
       }
     );
   }
+
   onCellPrepared(e) {
     if (e.rowType === "data" && e.column.command === "edit") {
       var isEditing = e.row.isEditing,
@@ -103,5 +111,24 @@ export class MemberComponent implements OnInit {
       }
     }
     )
+  }
+  showInfo(id) {
+    this.http.get(environment.UrlLocalHost + "ShowInfo/" + id).subscribe(
+      res => {
+          var result = res.json();
+         console.log(result);
+          this.mem_em_id = result[0]['mem_em_id'];
+          this.mem_firstname = result[0]['mem_firstname'] + ' ' + result[0]['mem_lastname'];
+          this.mem_id_card = result[0]['mem_id_card'];
+          this.tel = result[0]['mem_tel'];
+          this.address = result[0]['mem_address'];
+          this.mem_images = result[0]['mem_images'];
+
+      });
+
+
+
+    this.currentEmployee = id;
+    this.popupVisible = true;
   }
 }
